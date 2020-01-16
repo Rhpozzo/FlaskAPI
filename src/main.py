@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from models import db
-#from models import Person
+from models import Person
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -36,6 +36,25 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@app.route('/person', methods=['POST', 'GET'])
+def get_people():
+    if request.method == 'GET':
+        people_query = Person.query.all()
+        all_people = list(map(lambda x: x.serialize(), people_query))
+        return jsonify(all_people), 200
+
+def update_people():
+    user1 = Person.query.get(person_id)
+    if request.method == 'POST':
+        if "username" in body:
+            user1.username = body["username"]
+        if "email" in body:
+            user1.email = body["email"]
+    db.session.commit()
+
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
