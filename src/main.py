@@ -28,32 +28,26 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+@app.route('/people', methods=['GET'])
+def handle_person():
+    people = Person.query.all()
+    people = list(map(lambda x: x.serialize(), people))
+    return jsonify(people), 200
+    
 
-    response_body = {
-        "hello": "world"
-    }
-
-    return jsonify(response_body), 200
-
-@app.route('/person', methods=['POST', 'GET'])
-def get_people():
-    if request.method == 'GET':
-        people_query = Person.query.all()
-        all_people = list(map(lambda x: x.serialize(), people_query))
-        return jsonify(all_people), 200
-
-def update_people():
-    user1 = Person.query.get(person_id)
-    if request.method == 'POST':
-        if "username" in body:
-            user1.username = body["username"]
-        if "email" in body:
-            user1.email = body["email"]
+@app.route('/person', methods=['POST'])
+def handle_add_person():
+    body = request.get_json()
+    person = Person(username=body['username'], email=body['email'], full_name=body['full_name'], address=body['address'], phone=body['phone'])
+    db.session.add(person)
     db.session.commit()
+    return jsonify(person.serialize()), 200
 
-
+# @app.route('/person/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+# def handle_person_update():
+#     if request.method == 'PUT'
+#         body = request.get_json()
+#         Person.query.filter_by(id=id).update({})
 
 
 # this only runs if `$ python src/main.py` is executed

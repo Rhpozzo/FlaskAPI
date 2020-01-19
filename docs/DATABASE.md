@@ -1,4 +1,4 @@
-# Creating and/or Accessing the MySQL Database
+˜# Creating and/or Accessing the MySQL Database
 
 1. Log in to mysql terminal:
 ```sh
