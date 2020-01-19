@@ -43,11 +43,11 @@ def handle_add_person():
     db.session.commit()
     return jsonify(person.serialize()), 200
 
-@app.route('/person/<int:id>', methods=['GET', 'PUT', 'DELETE'])
-def handle_person_update():
-    if request.method == 'PUT'
-        body = request.get_json()
-        Person.query.filter_by(id=id).update({})
+# @app.route('/person/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+# def handle_person_update():
+#     if request.method == 'PUT'
+#         body = request.get_json()
+#         Person.query.filter_by(id=id).update({})
 
 
 # this only runs if `$ python src/main.py` is executed
